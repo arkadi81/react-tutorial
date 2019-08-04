@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 // import logo from './logo.svg';
+import Table from "./components/tableComponent";
 import Navbar from "./components/navbarComponent";
-import ItemsList from "./components/itemsListComponent";
+// import ItemsList from "./components/itemsListComponent";
+
 import "./App.css";
 
 class App extends Component {
@@ -73,12 +75,13 @@ class App extends Component {
           totalCounters={this.state.counters.filter(c => c.value > 0).length}
         />
         <main className="container">
-          <ItemsList
+          {/*<ItemsList
             onDelete={this.handleDelete}
             onIncrement={this.handleIncrement}
             onReset={this.handleReset}
             counters={this.state.counters}
-          />
+          />*/}
+          <Table />
         </main>
       </React.Fragment>
     );
