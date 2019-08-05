@@ -8,6 +8,10 @@ import "bootstrap/dist/css/bootstrap.css";
 //import Counter from "./components/counterComponent";
 //import ItemsList from "./components/itemsListComponent";
 
+//in prep for deployment, we can set and read env variables like so
+// note that during build, env variables are injected into build as static constants
+console.log(process.env);
+
 ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
