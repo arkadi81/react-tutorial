@@ -9,33 +9,9 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var apiRouter = require("./routes/api");
 
-var credentials = require("./credentials");
+// var credentials = require("./db/credentials");
 
 // start mongo stuff here --------------------------------
-
-const MongoClient = require("mongodb").MongoClient;
-// DO NOT HARD CODE CREDENTIALS
-const databaseConnectionString =
-  "mongodb+srv://" +
-  credentials.userName +
-  ":" +
-  credentials.password +
-  "@cluster0-ovzge.mongodb.net/test?retryWrites=true&w=majority";
-const PORT = 8080;
-
-const dbClient = new MongoClient(databaseConnectionString, {
-  useNewUrlParser: true
-});
-
-dbClient.connect(err => {
-  // console.log(databaseConnectionString);
-  // console.log(credentials.userName);
-  if (err) return console.log(err);
-  let db = dbClient.db(credentials.dbName); // whatever your database name is
-  app.listen(PORT, () => {
-    console.log("listening on port ", PORT);
-  });
-});
 
 var app = express();
 
@@ -71,4 +47,9 @@ app.use(function(err, req, res, next) {
   res.render("error");
 });
 
+const PORT = 8080;
+
+app.listen(PORT, () => {
+  console.log("listening on port ", PORT);
+});
 module.exports = app;
