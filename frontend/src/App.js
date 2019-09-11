@@ -4,8 +4,8 @@ import React, { Component } from "react";
 import Navbar from "./components/navbarComponent";
 // import CRUDTemplate from "./components/crudComponent";
 // import ItemsList from "./components/itemsListComponent";
-import Counter from "./components/counterComponent";
-import Movies from "./components/moviesComponent";
+import Counter from "./components/counters";
+import Movies from "./components/movies";
 
 import "./App.css";
 
@@ -84,7 +84,7 @@ class App extends Component {
             onReset={this.handleReset}
             counters={this.state.counters}
           />*/}
-
+          <Counter />
           <Movies />
           {/* <CRUDTemplate /> */}
           {/*<Table />*/}

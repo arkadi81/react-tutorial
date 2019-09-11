@@ -7,6 +7,9 @@ Js can also be used for preformatting of output etc (we can return jsx)
   - refactoring: ctrl/shift/R
   - new react snippets shortcuts
   - rcc - import react and build component
+  - zen coding: quickly building out ui
+    like so:
+    return table.table>thead>tr>th \*4 -> then tab to generate the markup
 
 - js
 
@@ -14,6 +17,9 @@ Js can also be used for preformatting of output etc (we can return jsx)
     obj.method() -> this refers to ob
     func() -> this refers to window or undefined.
   - reminder: JS will evaluate A && 'string' as follows: if A true, then 'non empty string' is truthy, hence displayed. any number but 0 is truthy, any non empty string is truthy
+  - in modern javascript / ES6, if key and value are same, we can eliminate repetitioon and just state things once.
+  - dnf: object destructuring is super nice
+    const { length: count} = this.state.movies // get length of movies array, call it count
 
 - jsx
 
@@ -62,6 +68,17 @@ state = {...}
 
   - as above, to handle events, we pass a function reference to the onClick attribute. We cannot pass arguments this way. Instead, use arrow notation:
     <button onClick = {() => handleIncrment(myArgument)}
+
+- passing data between components
+
+  - passing data from parent component to child component via props
+    return... <ChildComponent key=value...>
+    these can be accessed through the this.props in the child component
+    props is a plain js object which includes all of the attributes set by the parent component
+
+- raising and handling events
+
+* lifecycle hooks
 
 badge badge-primary is bootstrap stuff
 m-2 = margin 2
