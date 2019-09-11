@@ -6,7 +6,7 @@ class CRUDtemplate extends Component {
   render() {
     return (
       <React.Fragment>
-        <h1>CRUD template here</h1>
+        <h1>CRUD template here HII</h1>
         <form action="/new" method="POST">
           <input type="text" placeholder="name" name="name" />
           <input type="text" placeholder="quote" name="quote" />

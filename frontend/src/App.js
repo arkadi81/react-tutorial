@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 // import logo from './logo.svg';
-import Table from "./components/tableComponent";
+// import Table from "./components/tableComponent";
 import Navbar from "./components/navbarComponent";
-import CRUDTemplate from "./components/crudComponent";
+// import CRUDTemplate from "./components/crudComponent";
 // import ItemsList from "./components/itemsListComponent";
+import Counter from "./components/counterComponent";
+import Movies from "./components/moviesComponent";
 
 import "./App.css";
 
@@ -82,7 +84,9 @@ class App extends Component {
             onReset={this.handleReset}
             counters={this.state.counters}
           />*/}
-          <CRUDTemplate />
+
+          <Movies />
+          {/* <CRUDTemplate /> */}
           {/*<Table />*/}
         </main>
       </React.Fragment>

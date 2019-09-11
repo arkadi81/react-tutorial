@@ -1,52 +1,5 @@
 import React, { Component } from "react";
 
-/*since jsx expressions get compiled to react elements, some keywords inside jsx are a bit different
-use className instead of class attribute
-
-badge badge-primary is bootstrap stuff
-m-2 = margin 2
-
-applying styling inline: style={this.styles}. styles should have css properties in camelCase
-e.g. styles = { fontSize = 10, fontWeight = 'bald'}
-note if truly inline, double curly braces happen - this is never advised anyways.
-
-dynamic rendering of classes
-
-communication between components?
-
-jsx is not a templating engine - just syntax, no loops , if/else etc.
-for conditional rendering, use plain js
-
-when applying dynamic stuff, use {}
-
-list items should have unique keys
-
-conditional rendering also can be achieved by injecting into jsx: (logical statement && 'what to display')
-reminder: JS will evaluate A && 'string' as follows: if A true, then 'non empty string' is truthy, hence displayed
-any number but 0 is truthy
-any non empty string is truthy
-
-more js intricacies:
-this refers to different things depending on how function is called.
-- when function is called as obj.method(), this refers to obj
-- function() - this = window (or if strict mode is enabled, it will this == undefined)
-
-refactoring: ctrl/shift/R
-
-handling events: 1 - case sensitive!! 2- dont call the function - only pass reference (no ())
-- when we need to pass arguments to ui driven events, use arrow function notation {() => func(arg)}
-
-Next up - 
-composing components to build a multicomponent app
-passing data between components
-raise and handle events
-make multiple components be in sync
-functional components
-lifecycle hooks
-
-
-
-*/
 class Counter extends Component {
   state = {
     //value: this.props.counter.value,
@@ -113,12 +66,12 @@ class Counter extends Component {
     );
   }
 
-  getBadgeClasses() {
+  getBadgeClasses = () => {
     // dynamic class modification
     let classes = "badge m-2 badge-";
     classes += this.props.counter.value === 0 ? "warning" : "primary"; // append class dynmically depending on value
     return classes;
-  }
+  };
 
   formatCount() {
     const { value } = this.props.counter; // this is called destructuring an object - pick out a prop from inside object
