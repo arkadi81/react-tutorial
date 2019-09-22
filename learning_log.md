@@ -145,6 +145,8 @@ state = {...}
           - pagination / filtering / sorting
             when building a reusable component, think of interface: in / out / events. try conceptually using it
 
+
+
     dynamic rendering of classes
 
 communication between components?
