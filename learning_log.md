@@ -149,7 +149,12 @@ DNF - when component state is changed, that component and all of its children ar
 
 last edits on pc, 20190928, as far as section 6 of pagination
 
-    dynamic rendering of classes
+20190928
+
+- Pagination implementation -
+  per video, when implementing pagination, we dont mess with original dataset, but create subsets for things like filters etc. NOTE, should probably take into account how much data we pull for very large sets!
+
+  dynamic rendering of classes
 
 communication between components?
 
