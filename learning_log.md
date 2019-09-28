@@ -145,7 +145,9 @@ state = {...}
           - pagination / filtering / sorting
             when building a reusable component, think of interface: in / out / events. try conceptually using it
 
+DNF - when component state is changed, that component and all of its children are "re-rendered" (meaning virtual doms are compared and swapped as neeeded)
 
+last edits on pc, 20190928, as far as section 6 of pagination
 
     dynamic rendering of classes
 

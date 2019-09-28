@@ -3,6 +3,7 @@ import React from "react";
 /*Interface:
 inputs: itemsCount - number of total items
         pageSize - the amount of items on each oage
+        currentPage - which page we're currently on
 events: onPageChange(newPageNumber) - raised by this component whenever the page number changeson
 output:
 */
@@ -31,6 +32,14 @@ const Pagination = props => {
   console.log("current page is: ", currentPage);
   if (pagesCount === 1) return <span>End of data</span>; // dont render pagination if only one page
 
+  const formatClasses = pageNumber => {
+    let classes = "page-item";
+    if (pageNumber === currentPage) {
+      classes += " active";
+    }
+    return classes;
+  };
+
   // calculate out arrage of page numbers, or use lodash (underscore as alternative);
 
   //for time being, no first last prev next buttons.
@@ -44,7 +53,7 @@ const Pagination = props => {
             </a>
           </li> */}
           {pagesArr.map(page => (
-            <li key={page} className={formatClasses}>
+            <li key={page} className={formatClasses(page)}>
               <a className="page-link" onClick={() => onPageChange(page)}>
                 {page}
               </a>
@@ -76,11 +85,4 @@ const Pagination = props => {
   );
 };
 
-formatClasses = pageNumber => {
-  const classes = "page-item";
-  if (pageNumber === 1) {
-    classes += " active";
-  }
-  return classes;
-};
 export default Pagination;
