@@ -154,6 +154,14 @@ last edits on pc, 20190928, as far as section 6 of pagination
 - Pagination implementation -
   per video, when implementing pagination, we dont mess with original dataset, but create subsets for things like filters etc. NOTE, should probably take into account how much data we pull for very large sets!
 
+  - type checking
+    in order to guarantee that we can write reusable components that actually get utilized properly
+
+  1. document use
+  2. check types of data that component recieves. this is done using prop-types. in this case
+     npm i prop-types@15.6.2
+     comprehensive list and guide to type checking in React docs
+
   dynamic rendering of classes
 
 communication between components?
