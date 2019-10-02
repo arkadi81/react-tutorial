@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 /*Interface:
 inputs: itemsCount - number of total items
@@ -12,7 +13,7 @@ output:
 //algorithm - using page size and total items create an array of page numbers. map array to bootstrap buttons
 // for timebeing im avoiding lowdash and using my own function
 
-// import _ from "lodash";
+import _ from "lodash";
 
 const range = (lowerBound, upperBound) => {
   // returns array containing numbers from lowerBound to upperBound, inclusive on both ends
@@ -59,30 +60,17 @@ const Pagination = props => {
               </a>
             </li>
           ))}
-          {/* <li className="page-item">
-            <a className="page-link" onClick={() => props.onPageChange(1)}>
-              1
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" onClick={() => props.onPageChange(1)}>
-              2
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" onClick={() => props.onPageChange(1)}>
-              3
-            </a>
-          </li> */}
-          {/* <li className="page-item">
-            <a className="page-link" onClick={() => props.onPageChange(1)}>
-              Next
-            </a>
-          </li> */}
         </ul>
       </nav>
     </React.Fragment>
   );
+};
+
+Pagination.propTypes = {
+  itemsCount: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired
 };
 
 export default Pagination;

@@ -1,4 +1,5 @@
 import _ from "lodash";
+import PropTypes from "prop-types";
 
 export function paginate(itemsArray, pageNumber, pageSize) {
   /* get an array of items, page size and the number of the page we need,
@@ -12,5 +13,8 @@ export function paginate(itemsArray, pageNumber, pageSize) {
   //   _.take(itemsArray, pageSize); // will take indicated number of elements from beginning of array
   return _(itemsArray)
     .slice(startIndex)
-    .take(pageSize);
+    .take(pageSize)
+    .value(); // value will return a reg array
+
+  // note - pagination can (and probably should) be done on server
 }
