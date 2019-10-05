@@ -23,12 +23,6 @@ class ListGroup extends Component {
     console.log("props: ", this.props.items);
     return (
       <ul className="list-group">
-        <li
-          className="list-group-item"
-          onClick={() => this.props.onItemSelect("")}
-        >
-          All Genres
-        </li>
         {items.map(item => (
           <li
             key={item[valueProperty]}

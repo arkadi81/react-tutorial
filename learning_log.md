@@ -157,21 +157,23 @@ last edits on pc, 20190928, as far as section 6 of pagination
   - type checking
     in order to guarantee that we can write reusable components that actually get utilized properly
 
-  1. document use
-  2. check types of data that component recieves. this is done using prop-types. in this case
-     npm i prop-types@15.6.2
-     comprehensive list and guide to type checking in React docs
+  1.  document use
+  2.  check types of data that component recieves. this is done using prop-types. in this case
+      npm i prop-types@15.6.2
+      comprehensive list and guide to type checking in React docs
 
-  dynamic rendering of classes
+           to type check components, after the definition of component, go like so:
+           Pagination.propTypes = {
 
-communication between components?
+              itemsCount: PropTypes.number.isRequired,
+              pageSize: PropTypes.number.isRequired,
+              currentPage: PropTypes.number.isRequired,
+              onPageChange: PropTypes.func.isRequired
+            };
 
-Next up -
-composing components to build a multicomponent app
-passing data between components
-raise and handle events
-make multiple components be in sync
-functional components
-lifecycle hooks
+- default props: after definition of component, go like so:
+  ListGroup.defaultProps = { textProperty: "name", valueProperty: "\_id" };
 
-\*/
+Note - pagination and filtering - apply filter BEFORE pagination, since number of pages is dependant on number of movies.
+
+PATTERN NOTE - filter first, paginate after. dont forget to reset page count every time filtering (genre selection) happens.
