@@ -185,3 +185,9 @@ in this case, let's destructure the low level movie rendering table into moviesT
 by convension - build object destructuring at beginnning of every functional (or otherwise?) component.
 
 As best as possible, try to avoid mixture output of high and low level components
+
+Addition - sorting. First filter, then sort, then paginate
+
+note - lodash has a nice sort utility where it takes an array and sorts it by multiple columns and orders, the structure is
+sortColumn: { path, order: "asc" }
+\_.sortBy(originalArray,[paths to sort columns], [orders: asc/dsc])
