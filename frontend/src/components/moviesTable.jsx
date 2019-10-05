@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Like from "./common/like";
-import TableHeader from "./common/tableHeader";
-import TableBody from "./common/tableBody";
+import Table from "./common/table";
 
 class MoviesTable extends Component {
   columns = [
@@ -30,32 +29,21 @@ class MoviesTable extends Component {
   render() {
     const { movies, onSort, sortColumn } = this.props; // note, no this.
     return (
-      <table className="table">
-        <TableHeader
-          columns={this.columns}
-          sortColumn={sortColumn}
-          onSort={onSort}
-        />
-        {/* <thead>
-          <tr>
-            <th onClick={() => this.raiseSort("title")} scope="col">
-              Title
-            </th>
-            <th onClick={() => this.raiseSort("genre.name")} scope="col">
-              Genre
-            </th>
-            <th onClick={() => this.raiseSort("numberInStock")} scope="col">
-              Stock
-            </th>
-            <th onClick={() => this.raiseSort("dailyRentalRate")} scope="col">
-              Rate
-            </th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-          </tr>
-        </thead> */}
-        <TableBody data={movies} columns={this.columns} />
-      </table>
+      <Table
+        data={movies}
+        onSort={onSort}
+        sortColumn={sortColumn}
+        columns={this.columns}
+      />
+
+      //   <table className="table">
+      //     <TableHeader
+      //       columns={this.columns}
+      //       sortColumn={sortColumn}
+      //       onSort={onSort}
+      //     />
+      //     <TableBody data={movies} columns={this.columns} />
+      //   </table>
     );
   }
 }

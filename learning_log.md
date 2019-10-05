@@ -197,4 +197,8 @@ responsibility/logic for sorting has been now moved to MoviesTable
 in 21,22, we're refactoring the table header and body to be data agnostic.
 note, both simple html content and more complicated markup in jsx, gets transpiled to react elements, which are js objects. this allows us to have a single approach to the rendering of both text and more complex markup.
 
-complex markup can be injected into the content property of our columns array. if the complex markup has parameters, we can set the content property to a function that passes these parameters to the markup
+complex markup can be injected into the content property of our columns array. if the complex markup has parameters, we can set the content property to a function that passes these parameters to the markup.
+
+we can build a function that renders simple content if theres no content parameters, or injects complex markup if the content property of a column is present.
+
+Routing:

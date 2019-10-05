@@ -24,8 +24,8 @@ const range = (lowerBound, upperBound) => {
   return arr;
 };
 
-const Pagination = props => {
-  const { itemsCount, pageSize, onPageChange, currentPage } = props;
+const Pagination = ({ itemsCount, pageSize, onPageChange, currentPage }) => {
+  // const { itemsCount, pageSize, onPageChange, currentPage } = props;
   const pagesCount = Math.ceil(itemsCount / pageSize); // so we don't run into floating point issues
   const pagesArr = range(1, pagesCount); // otherwise range does not include upper boundary
   console.log("pages array: ", pagesArr);

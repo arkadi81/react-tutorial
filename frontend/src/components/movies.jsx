@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
-
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate"; // remember, named exports
 import ListGroup from "./common/listGroup";
@@ -63,21 +62,14 @@ class Movies extends Component {
     this.setState({ sortColumn }); // temp for path to property we're sortig by and order, to be toggled later.
   };
 
-  render() {
-    // demonstration of object destructuring. get length out of this.state.movies, rename it to count
-    const { length: count } = this.state.movies;
+  getPageData = () => {
     const {
       movies: allMovies,
       pageSize,
       currentPage,
-      genres,
       selectedGenre,
       sortColumn
     } = this.state;
-    if (count == 0) return <div>No movies in database!</div>;
-
-    // filter the movies before paginating - number of pages depends on filter
-
     const filteredMovies =
       selectedGenre.name && selectedGenre._id // if both truthy, apply filter - otherwise display all
         ? allMovies.filter(movie => movie.genre._id === selectedGenre._id)
@@ -90,6 +82,27 @@ class Movies extends Component {
     );
 
     const movies = paginate(sortedMovies, currentPage, pageSize);
+
+    return {
+      totalCount: filteredMovies.length,
+      data: movies
+    };
+  };
+
+  render() {
+    // demonstration of object destructuring. get length out of this.state.movies, rename it to count
+    const { length: count } = this.state.movies;
+    const {
+      pageSize,
+      currentPage,
+      genres,
+      selectedGenre,
+      sortColumn
+    } = this.state;
+    if (count == 0) return <div>No movies in database!</div>;
+
+    const result = this.getPageData();
+    const { totalCount, data: movies } = result;
 
     return (
       <React.Fragment>
@@ -105,8 +118,8 @@ class Movies extends Component {
           </div>
           <div className="col">
             <div>
-              Movies Component here! There are {filteredMovies.length} movies in
-              the database
+              Movies Component here! There are {totalCount} movies in the
+              database
             </div>
             <MoviesTable
               movies={movies}
@@ -116,7 +129,7 @@ class Movies extends Component {
               sortColumn={sortColumn}
             />
             <Pagination
-              itemsCount={filteredMovies.length}
+              itemsCount={totalCount}
               pageSize={this.state.pageSize}
               onPageChange={this.handlePageChange}
               currentPage={this.state.currentPage}
