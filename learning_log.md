@@ -191,3 +191,10 @@ Addition - sorting. First filter, then sort, then paginate
 note - lodash has a nice sort utility where it takes an array and sorts it by multiple columns and orders, the structure is
 sortColumn: { path, order: "asc" }
 \_.sortBy(originalArray,[paths to sort columns], [orders: asc/dsc])
+
+responsibility/logic for sorting has been now moved to MoviesTable
+
+in 21,22, we're refactoring the table header and body to be data agnostic.
+note, both simple html content and more complicated markup in jsx, gets transpiled to react elements, which are js objects. this allows us to have a single approach to the rendering of both text and more complex markup.
+
+complex markup can be injected into the content property of our columns array. if the complex markup has parameters, we can set the content property to a function that passes these parameters to the markup

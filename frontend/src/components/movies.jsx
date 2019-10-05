@@ -14,7 +14,7 @@ class Movies extends Component {
     genres: [],
     pageSize: 4,
     currentPage: 1,
-    selectedGenre: "",
+    selectedGenre: {},
     sortColumn: {}
   };
 
@@ -24,14 +24,15 @@ class Movies extends Component {
     this.setState({
       movies: getMovies(),
       genres,
-      sortColumn: { path: "title", order: "asc" }
+      sortColumn: { path: "title", order: "asc" },
+      selectedGenre: genres[0] // initialize to all genres
     });
   }
 
-  handleDelete = _id => {
-    console.log(_id);
+  handleDelete = movie => {
+    console.log(movie);
     //erase movie with _id as passed
-    const filtered = this.state.movies.filter(m => m._id != _id); // returns only elements where id isnt same
+    const filtered = this.state.movies.filter(m => m != movie); // returns only elements where id isnt same
     this.setState({ movies: filtered });
   };
 
@@ -56,18 +57,9 @@ class Movies extends Component {
     this.setState({ selectedGenre: genre, currentPage: 1 });
   };
 
-  handleSort = path => {
+  handleSort = sortColumn => {
     // console.log(path);
     //algorithm - compare the path with original path - if same, flip sort order. if different, set new path ascending
-    const sortColumn = { ...this.state.sortColumn };
-    if (sortColumn.path === path) {
-      // change sort order
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    } else {
-      sortColumn.path = path;
-      sortColumn.order = "asc";
-    }
-
     this.setState({ sortColumn }); // temp for path to property we're sortig by and order, to be toggled later.
   };
 
@@ -121,6 +113,7 @@ class Movies extends Component {
               onLike={this.handleLike}
               onDelete={this.handleDelete}
               onSort={this.handleSort}
+              sortColumn={sortColumn}
             />
             <Pagination
               itemsCount={filteredMovies.length}

@@ -27,7 +27,7 @@ class ListGroup extends Component {
           <li
             key={item[valueProperty]}
             className={
-              item === selectedItem
+              item == selectedItem
                 ? "list-group-item active"
                 : "list-group-item"
             }
