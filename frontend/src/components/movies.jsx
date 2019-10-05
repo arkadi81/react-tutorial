@@ -3,17 +3,22 @@ import { getMovies } from "../services/fakeMovieService";
 import Like from "./common/like";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate"; // remember, named exports
-import Filter from "./common/filter";
+import ListGroup from "./common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
 
 class Movies extends Component {
   state = {
-    movies: getMovies(),
-    genres: getGenres(),
+    movies: [],
+    genres: [],
     pageSize: 4,
     currentPage: 2,
     currentGenreID: ""
   };
+
+  componentDidMount() {
+    //best place to refresh state
+    this.setState({ movies: getMovies(), genres: getGenres() });
+  }
 
   handleDelete = _id => {
     console.log(_id);
@@ -37,38 +42,48 @@ class Movies extends Component {
     this.setState({ currentPage: newPageNumber });
   };
 
-  handleGenreChange = newGenre => {
-    console.log(newGenre);
-    this.state.currentGenreID = newGenre;
-    if (newGenre !== "") {
-      //apply filter
-      const filteredMovies = this.state.movies.filter(
-        movie => movie.genre._id == newGenre
-      );
-      console.log("filtered movies: ", filteredMovies);
-      this.setState({ movies: filteredMovies });
-    } else {
-      //unfilter
-      const resetMovies = getMovies();
-      this.setState({ movies: resetMovies });
-    }
+  handleGenreSelect = genre => {
+    //set state to genre
+    console.log(genre);
+    this.setState({ selectedGenre: genre });
+    // this.state.currentGenreID = newGenre;
+    // if (newGenre !== "") {
+    //   //apply filter
+    //   const filteredMovies = this.state.movies.filter(
+    //     movie => movie.genre._id == newGenre
+    //   );
+    //   console.log("filtered movies: ", filteredMovies);
+    //   this.setState({ movies: filteredMovies });
+    // } else {
+    //   //unfilter
+    //   const resetMovies = getMovies();
+    //   this.setState({ movies: resetMovies });
+    // }
   };
 
   render() {
     // demonstration of object destructuring. get length out of this.state.movies, rename it to count
     const { length: count } = this.state.movies;
-    const { movies: allMovies, pageSize, currentPage, genres } = this.state;
+    const {
+      movies: allMovies,
+      pageSize,
+      currentPage,
+      genres,
+      selectedGenre
+    } = this.state;
     if (count == 0) return <div>No movies in database!</div>;
 
     const movies = paginate(allMovies, currentPage, pageSize);
     return (
       <React.Fragment>
         <div className="row">
-          <div className="col-2">
-            <Filter
-              genres={genres}
-              onGenreChange={this.handleGenreChange}
-              currentGenre={1}
+          <div className="col-3">
+            <ListGroup
+              items={genres}
+              // textProperty="name"
+              // valueProperty="_id"
+              onItemSelect={this.handleGenreSelect}
+              selectedItem={selectedGenre}
             />
           </div>
           <div className="col">
