@@ -177,3 +177,11 @@ last edits on pc, 20190928, as far as section 6 of pagination
 Note - pagination and filtering - apply filter BEFORE pagination, since number of pages is dependant on number of movies.
 
 PATTERN NOTE - filter first, paginate after. dont forget to reset page count every time filtering (genre selection) happens.
+
+PATTERN NOTE - mixed level of abstraction - having components which are both high level abstracted, and very specific in the same view can cause issues, code becomes inconsistent. The solution is to destructure our components to make things that CAN be abstracted into abstract components
+
+in this case, let's destructure the low level movie rendering table into moviesTable.jsx - this is not a high level common / reusable - just a detailed movies table view. we can refactor this type of code step by step, and eventually make a reusable table compoennt (literally what i was hoping to do initially)
+
+by convension - build object destructuring at beginnning of every functional (or otherwise?) component.
+
+As best as possible, try to avoid mixture output of high and low level components
