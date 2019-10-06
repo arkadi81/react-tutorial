@@ -14,6 +14,7 @@ Js can also be used for preformatting of output etc (we can return jsx)
   - zen coding: quickly building out ui
     like so:
     return table.table>thead>tr>th \*4 -> then tab to generate the markup
+  - wrap code with a tag of choice: select the code snippet, ctrl+shift+p -> wrap ->tag of choice
 
 - js
 
@@ -298,4 +299,38 @@ npm i react-router-dom@4.3.1
         - /404 page on invalid link
         - /movies/:id displays id
         - / movify movies to have a link to go to movies/:id
-        - /
+        - /add save button to movies to redirect back to /movies
+
+    - Forms:
+
+      DNF: By default, submitting a form causes a full page reload. to avoid, rewire the onSubmit event of the form
+      <form onSubmit={this.handler}>
+
+      - References
+      since react is a form of abstaction encapsulating the DOM, it is ideal not to work with document. or DOM directly when working with react. if we need access to various DOM elements, use refs. as a rule of thumb, minimize the use of Refs - there are better tools. Refs are handy for custom behaviour only.
+
+      - Controlled elements - interacting with form fields, getting values etc.
+      The pattern is similar to controlled components - controlled fields dont have state of their own - they get all of their data via props, and notify of changes in their values by raising events
+      if our component state={ username="ark"} and our markup is <input value={this.state.username}> this will create a ONE WAY binding - the value in the input box cannot be changed by user - it is bound to state. in order to create a TWO WAY binding, we must bind the Change event of the input field.
+
+      value => state
+      change => raise an event to update state
+
+      - Handling Multiple Inputs
+        we can work with all of the properties dynamically using the same handler. give each input field a property to direct it to the correct property
+
+      - common errors
+      null and undefined cannot be used as values of controlled elements
+
+      - extracting reusable input markup
+      an input (especially the bootstrap flavour) has a ton of repetition, bears to be encapsulated in a component
+
+      - validation
+      state, in addition to all of the data, will also have errors. the properties of the errors object map to the names of our data points
+      build a validation function which adds validation errors depending on the required logic, and returns the errors object
+
+      we can delegate the responsibility of displaying error messages to the input component (via props)
+
+      - validation on change
+      call validation on change of field (in the handleChange method)
+      build another function to validate a single property

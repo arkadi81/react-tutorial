@@ -25,7 +25,18 @@ class Navbar extends Component {
         <Link className="navbar-brand" to="/">
           My app name
         </Link>
-        <div className="collapse navbar-collapse">
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
             <NavLink className="nav-iem nav-link" to="/movies">
               Movies
@@ -35,6 +46,9 @@ class Navbar extends Component {
             </NavLink>
             <NavLink className="nav-iem nav-link" to="/rentals">
               Rentals
+            </NavLink>
+            <NavLink className="nav-iem nav-link" to="/login">
+              Login
             </NavLink>
           </div>
         </div>
