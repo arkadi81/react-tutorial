@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
+import Input from "./input";
 
 class Form extends Component {
   state = {
@@ -56,6 +57,29 @@ class Form extends Component {
     data[input.name] = input.value;
     this.setState({ data, errors });
     // console.log(errors);
+  };
+
+  renderButton = label => {
+    return (
+      <button className="btn btn-primary" disabled={this.validate()}>
+        {label}
+      </button>
+    );
+  };
+
+  renderInput = (controlName, label, type = "text") => {
+    // type is there to allow for hidden password chars
+    const { data, errors } = this.state;
+    return (
+      <Input
+        type={type}
+        name={controlName}
+        value={data[controlName]}
+        label={label}
+        onChange={this.handleChange}
+        error={errors[controlName]}
+      />
+    );
   };
   //   render() {
   //     return <h1>form</h1>;

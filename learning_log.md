@@ -362,3 +362,10 @@ npm i react-router-dom@4.3.1
       validation can be extracted, provided we come up with a convension of how our state and data will be structured for the forms we use
 
       we can build a reusable form control which will include validation and presentation logic, and then have various forms extend that reusable form component, so that they inherit the reusable behaviours
+
+      - refactoring further
+      we can use the {...rest} operator to spread an unknown amount of parameters and pass them to attributes. see input.jsx for example
+
+      -exercises:
+      build register form (uname, pw, name, register button). add routing to navbar for register.
+      make sure to have validation for username-valid email. pw = min 5 chars. done in 8 minutes using copy paste from login form + modifications.

@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/form"; // base class, reusable form component
 
-class LoginForm extends Form {
+class RegisterForm extends Form {
   state = {
     data: {
       username: "",
-      password: ""
+      password: "",
+      name: ""
     },
     errors: {} // error messages corresponding to issues with data data
   };
@@ -15,10 +16,15 @@ class LoginForm extends Form {
   schema = {
     username: Joi.string()
       .required()
+      .email({ minDomainAtoms: 2 })
       .label("Username"),
     password: Joi.string()
       .required()
-      .label("Password")
+      .min(5)
+      .label("Password"),
+    name: Joi.string()
+      .required()
+      .label("Name")
   };
 
   //   username = React.createRef();
@@ -35,11 +41,12 @@ class LoginForm extends Form {
   render() {
     return (
       <div>
-        <h1>Login Form</h1>
+        <h1>Register Form</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("username", "Username")}
           {this.renderInput("password", "Password", "password")}
-          {this.renderButton("Login")}
+          {this.renderInput("name", "Name")}
+          {this.renderButton("Register")}
           {/* <Input
             name="username"
             value={data.username}
@@ -61,4 +68,4 @@ class LoginForm extends Form {
   }
 }
 
-export default LoginForm;
+export default RegisterForm;
