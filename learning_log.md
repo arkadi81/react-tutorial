@@ -6,6 +6,8 @@ Js can also be used for preformatting of output etc (we can return jsx)
   - useful for image testing with side:imgUrl: "https://picsum.photos/200"
 - vscode
 
+  - replace dialog: ctrl/H
+
   - refactoring: ctrl/shift/R
   - new react snippets shortcuts
   - imrc + cc OR
@@ -17,6 +19,9 @@ Js can also be used for preformatting of output etc (we can return jsx)
   - wrap code with a tag of choice: select the code snippet, ctrl+shift+p -> wrap ->tag of choice
 
 - js
+
+  - null is falsy
+  - objects are truthy
 
   - reminder: this
     obj.method() -> this refers to ob
@@ -334,3 +339,26 @@ npm i react-router-dom@4.3.1
       - validation on change
       call validation on change of field (in the handleChange method)
       build another function to validate a single property
+
+      generally speaking, keep validation errors in a separately updated object. that way, we have a way to respond to each problem based on the values stored in that object
+
+      - Joi - good form validation library
+      npm i joy-browser@13.4
+      usage of joi - define a schema with all of the validation logic. examples in the documentation.
+      by default, Joi terminates validation as soon as it finds an error. ("abort early")
+
+        USAGE:
+        schema = {
+      username: Joi.string().required(),
+      password: Joi.string().required()
+
+        };
+
+      then, as   part of the validation
+      const result = Joi.validate(this.state.account, this.schema);
+
+      forms / 17
+      Approach to code review and refactoring. go over code -what can we extract as reusable?
+      validation can be extracted, provided we come up with a convension of how our state and data will be structured for the forms we use
+
+      we can build a reusable form control which will include validation and presentation logic, and then have various forms extend that reusable form component, so that they inherit the reusable behaviours
