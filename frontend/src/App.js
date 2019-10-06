@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 // import logo from './logo.svg';
 // import Table from "./components/tableComponent";
 import Navbar from "./components/navbar";
@@ -7,8 +8,11 @@ import Navbar from "./components/navbar";
 // import Counter from "./components/counters";
 import Movies from "./components/movies";
 import Counters from "./components/counters";
-
 import "./App.css";
+import Customers from "./components/customers";
+import Rentals from "./components/rentals";
+import NotFound from "./components/notFound";
+import MovieForm from "./components/movieForm";
 
 class App extends Component {
   state = {
@@ -109,16 +113,23 @@ class App extends Component {
             counters={this.state.counters}
           />*/}
 
-          <Counters
+          {/* <Counters
             counters={this.state.counters}
             onReset={this.handleReset}
             onIncrement={this.handleIncrement}
             onDecrement={this.handleDecrement}
             onDelete={this.handleDelete}
-          />
-          <Movies />
-          {/* <CRUDTemplate /> */}
-          {/*<Table />*/}
+          /> */}
+          <Switch>
+            <Route path="/movies/:id" component={MovieForm} />
+            <Route path="/movies" component={Movies} />
+            <Route path="/customers" component={Customers} />
+            <Route path="/rentals" component={Rentals} />
+            <Route path="/not-found" component={NotFound} />
+            <Redirect from="/" exact to="/movies"></Redirect>
+            {/* <Route path="/" exact component={Movies} /> */}
+            <Redirect to="/not-found" />
+          </Switch>
         </main>
       </React.Fragment>
     );

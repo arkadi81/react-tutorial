@@ -201,4 +201,101 @@ complex markup can be injected into the content property of our columns array. i
 
 we can build a function that renders simple content if theres no content parameters, or injects complex markup if the content property of a column is present.
 
-Routing:
+---------------------------------Routing:
+
+1. setup - get some starter files
+2. get a vscode plugin for autoimport - ES6, TS, JSX, TSX by sergey korenuk
+
+react is a lightweight library for rendering dom only - it is not a complete framework, and hence, needs more tools for routing
+
+npm i react-router-dom@4.3.1
+
+- in index.js wrap <App/> with <BrowserRouter>
+- in App.js use <Route> to select component based on url
+- use <Switch> (from most specific to most generic) to switch between
+- use LINK instead of a/href. DNF import {Link} from 'react-router-dom';
+- instead of a.href, use link/to to override std browser behaviour and not send additional requests to server other than necessary xhrs.
+
+- the <Route> component will automatically will inject 3 props into the component it calls:
+
+  - history
+  - location (where app is now)
+  - match (info about how this url matched the path we set in the route)
+
+  - in order to inject our own props into routed components, use as follows
+    <Route path="/..." render={()=><ComponentName prop1=... prop2=.... />}>
+    if we want automatic injection of the original 3 props, go like so:
+    <Route path="/..." render={(props)=><ComponentName prop1=... prop2=.... {...props} />}>
+
+  - route parameters:
+    e.g. /products/1
+    passing and retrieving route params
+    to define, use
+    <Route path="/products/:id">
+    or
+    <Route path="/products/:id/:id2"> for multiple parmas
+    to retrieve parameters passed through route, use match prop (or, rather this.props.match.params)
+
+    remember - DO NOT USE A/HREFS - they cause full page reloads - replace href anchorage with link/to
+
+    - optional parameters:
+      when we define params in our rotue, by default, the params are mandatory.
+      to make params optional, append ? to param name. this is a byproduct of regex in js
+
+    - query string parameters
+      generally speaking, try to avoid optional params
+      when we deal with optional params, we should ideally include them in querystring
+      such as /posts?sortBy=newest&approved=true . in this case, optional params can always be entered on the right.
+
+      using react dev tool, we can find that the location object includes our query string (more specifically, this.location.search includes the entire query string
+
+      to extract/parse values from query string, get query-string npm package
+
+      npm i query-string@6.1.0
+
+      usage:
+      import queryString from 'query-string'
+
+      const result = queryString.parse(location.search) //will return object with all of the params and their values. note, what we get from this parse is always a string. we'll need to cast/validate for numbers etc.
+
+    - redirects
+      DNF: Switch component matches from the most targeted to the most general. we can use the "exact" attribute to avoid wrong urls mapping to "/"
+
+      add Redirect component to imports in app.js
+      import {Route,Switch,Redirect} from 'react-component-dom';
+
+      in switch, at the very last place, if no routes are matched:
+      <Route path="/not-found" component={NotFound}>
+      <Redirect to="/not-found">
+
+      The redirect component can also be use to move resources around the website (such as after login?)
+      <Redirect from="/messages" to="/posts">
+
+    - Programmatic navigation (12)
+      (navigation triggered by user on action or by js)
+      the history object in props has several methods good for this.
+      some of these
+
+      - go back
+      - go forward
+      - push - adds new url in browser history
+      - replace - replaces address so we dont have history
+
+      something like this: this.props.history.push("/products") - allows us to get back to the last address if we click back
+      replace is often used in login pages.
+
+      - Nested routing
+        <Route> component can be used anywhere, not just in app.js
+
+        <NavLink> - another handy component - automatically adds highlight style to currently selected link
+
+
+        Exercise (14):
+        - add navbar: movies, clients, rentals
+        - highlight active with NavLink
+        - build costumers and rentals components to just display a title
+        - / redirects to movies
+        - /404 page on invalid link
+        - /movies/:id displays id
+        - / movify movies to have a link to go to movies/:id
+        - /
