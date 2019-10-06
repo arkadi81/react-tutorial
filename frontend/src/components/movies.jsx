@@ -6,6 +6,7 @@ import ListGroup from "./common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
 import MoviesTable from "./moviesTable";
 import _ from "lodash"; // to implement sorting
+import { deleteMovie } from "../services/fakeMovieService";
 
 class Movies extends Component {
   state = {
@@ -31,8 +32,10 @@ class Movies extends Component {
   handleDelete = movie => {
     console.log(movie);
     //erase movie with _id as passed
-    const filtered = this.state.movies.filter(m => m != movie); // returns only elements where id isnt same
+    const filtered = this.state.movies.filter(m => m != movie);
+    // returns only elements where id isnt same
     this.setState({ movies: filtered });
+    deleteMovie(movie._id);
   };
 
   handleLike = movie => {
@@ -60,6 +63,11 @@ class Movies extends Component {
     // console.log(path);
     //algorithm - compare the path with original path - if same, flip sort order. if different, set new path ascending
     this.setState({ sortColumn }); // temp for path to property we're sortig by and order, to be toggled later.
+  };
+
+  handleNewMovie = () => {
+    // console.log("new movie clicked");
+    this.props.history.push("/movies/new");
   };
 
   getPageData = () => {
@@ -117,6 +125,9 @@ class Movies extends Component {
             />
           </div>
           <div className="col">
+            <button className="btn btn-primary" onClick={this.handleNewMovie}>
+              New Movie
+            </button>
             <div>
               Movies Component here! There are {totalCount} movies in the
               database

@@ -369,3 +369,13 @@ npm i react-router-dom@4.3.1
       -exercises:
       build register form (uname, pw, name, register button). add routing to navbar for register.
       make sure to have validation for username-valid email. pw = min 5 chars. done in 8 minutes using copy paste from login form + modifications.
+
+      2. in movies.
+      - add button on top of movies form to direct to movies/new (movie form)
+      movie form: title, genre (dropdown), number in stock (0-100), rate (0-10), save button
+      on save, movie is added to state.
+      - clicking on the movie link redirects to the movie form, populates it and allows us to edit and change existing movie.
+      There are bugs in the fake movie service that we need to fix for crud to work.
+      est 30min
+
+      Solution and guidance - very typical real world situation - when we populate our state from server, or send data to server, we may need to build custom logic to map the data between server and stateto match each other. often, server endpoints will return data that is consumed by more than one page, and every page will need different parts and representations of the data, so we will have to map the data from the endpoint to the view

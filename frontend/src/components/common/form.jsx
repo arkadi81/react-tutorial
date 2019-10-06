@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./input";
+import Select from "./select";
 
 class Form extends Component {
   state = {
@@ -76,6 +77,29 @@ class Form extends Component {
         name={controlName}
         value={data[controlName]}
         label={label}
+        onChange={this.handleChange}
+        error={errors[controlName]}
+      />
+    );
+  };
+
+  renderSelect = (controlName, label, items) => {
+    // type is there to allow for hidden password chars
+    const { data, errors } = this.state;
+    return (
+      //   <Input
+      //     type={type}
+      //     name={controlName}
+      //     value={data[controlName]}
+      //     label={label}
+      //     onChange={this.handleChange}
+      //     error={errors[controlName]}
+      //   />
+      <Select
+        name={controlName}
+        value={data[controlName]}
+        label={label}
+        items={items}
         onChange={this.handleChange}
         error={errors[controlName]}
       />

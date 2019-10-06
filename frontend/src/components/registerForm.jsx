@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form"; // base class, reusable form component
 
@@ -12,11 +12,10 @@ class RegisterForm extends Form {
     errors: {} // error messages corresponding to issues with data data
   };
 
-  //   joy schema not part of state - its not changing
   schema = {
     username: Joi.string()
       .required()
-      .email({ minDomainAtoms: 2 })
+      .email()
       .label("Username"),
     password: Joi.string()
       .required()
@@ -26,12 +25,6 @@ class RegisterForm extends Form {
       .required()
       .label("Name")
   };
-
-  //   username = React.createRef();
-
-  //   componentDidMount() {
-  //     this.username.current.focus();
-  //   }
 
   doSubmit = () => {
     //
@@ -47,21 +40,6 @@ class RegisterForm extends Form {
           {this.renderInput("password", "Password", "password")}
           {this.renderInput("name", "Name")}
           {this.renderButton("Register")}
-          {/* <Input
-            name="username"
-            value={data.username}
-            label="Username"
-            onChange={this.handleChange}
-            error={errors.username}
-          /> */}
-          {/* <Input
-            name="password"
-            value={data.password}
-            label="Password"
-            onChange={this.handleChange}
-            error={errors.password}
-          /> */}
-          {/* validate returns either null or an object. null is falsy, objects are truthy. */}
         </form>
       </div>
     );
