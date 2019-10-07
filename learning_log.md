@@ -621,3 +621,12 @@ npm i react-router-dom@4.3.1
         note: currently failing some tests!
 
         to test endpoints, use postman (postman chrome now deprecated, using adanced REST client)
+        DNF disable auth in default.json if necessary
+
+        exercise: swap fakeGenre and fakeMovie services for real backend services
+        note httpservice and log service are necessary forthis all to work. note - anything that is async needs to be awaited.
+
+        saving (create/update is a bit more tricky. make sure you know what the server returns so there's no pipeline issues!)
+
+      - authentication and authorization
+        content: JSON web tokens, calling protected apis, showing/hiding elements, protecting routes

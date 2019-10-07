@@ -1,8 +1,10 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form"; // base class, reusable form component
-import { getGenres } from "../services/fakeGenreService";
-import { getMovie, saveMovie } from "../services/fakeMovieService";
+// import { getGenres } from "../services/fakeGenreService";
+import { getGenres } from "../services/genreService";
+import { getMovie, saveMovie } from "../services/movieService";
+import { toast } from "react-toastify";
 
 class MovieForm extends Form {
   state = {
@@ -16,19 +18,30 @@ class MovieForm extends Form {
     errors: {} // error messages corresponding to issues with data data
   };
 
-  componentDidMount = () => {
-    this.setState({ genres: getGenres() });
-    const { id } = this.props.match.params;
-    // if we have an id, populate. if not, have a new form going
-    if (!id) return;
-    // console.log("movie id detected: ", this.props.match.params.id);
-    // if we're here, we have an id - get the data and populate:
-    const movie = getMovie(id);
+  componentDidMount = async () => {
+    await this.populateGenres();
+    await this.populateMovie();
+  };
 
-    if (!movie) return this.props.history.replace("/not-found"); // in case the id is wrong. we dont need to go to the invalid movie id
-    // console.log("movie: ", movie);
+  populateGenres = async () => {
+    const { data: genres } = await getGenres();
+    this.setState({ genres });
+  };
 
-    this.setState({ data: this.mapToViewModel(movie) });
+  populateMovie = async () => {
+    try {
+      const { id } = this.props.match.params;
+      // if we have an id, populate. if not, have a new form going
+      if (!id) return;
+      // console.log("movie id detected: ", this.props.match.params.id);
+      // if we're here, we have an id - get the data and populate:
+      const { data: movie } = await getMovie(id);
+      this.setState({ data: this.mapToViewModel(movie) });
+    } catch (exception) {
+      if (exception.response.status === 404)
+        return this.props.history.replace("/not-found"); // in case the id is wrong. we dont need to go to the invalid movie id
+      // console.log("movie: ", movie);
+    }
   };
 
   mapToViewModel = movie => {
@@ -60,7 +73,7 @@ class MovieForm extends Form {
       .label("Rate")
   };
 
-  doSubmit = () => {
+  doSubmit = async () => {
     // console.log("Submitted");
     // determine if new movie to add or an existing movie to update:
 
@@ -69,7 +82,7 @@ class MovieForm extends Form {
     //if id truthy, that means we're updating
     // if (!id) {
     // console.log("adding movie: ", this.state.data);
-    saveMovie(this.state.data);
+    await saveMovie(this.state.data);
     // } else {
     //movie exists, update
     // console.log("updating existing movie: ", this.state.data);
@@ -80,7 +93,8 @@ class MovieForm extends Form {
   render() {
     return (
       <div>
-        <h1>Movie Form - {this.props.match.params.id}</h1>
+        {/* <h1>Movie Form - {this.props.match.params.id}</h1> */}
+        <h1>Movie Form - {this.state.data.title}</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("title", "Title")}
           {this.renderSelect("genreId", "Genre", this.state.genres)}

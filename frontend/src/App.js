@@ -15,6 +15,8 @@ import NotFound from "./components/notFound";
 import MovieForm from "./components/movieForm";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
   state = {
@@ -103,6 +105,7 @@ class App extends Component {
     // console.log("App - render fired");
     return (
       <React.Fragment>
+        <ToastContainer />
         <Navbar
           // only count those greater than 0
           totalCounters={this.state.counters.filter(c => c.value > 0).length}

@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { getMovies } from "../services/fakeMovieService";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate"; // remember, named exports
 import ListGroup from "./common/listGroup";
-import { getGenres } from "../services/fakeGenreService";
+// import { getGenres } from "../services/fakeGenreService";
+import { getGenres } from "../services/genreService";
 import MoviesTable from "./moviesTable";
 import _ from "lodash"; // to implement sorting
-import { deleteMovie } from "../services/fakeMovieService";
+// import { getMovies, deleteMovie } from "../services/fakeMovieService";
+import { getMovies, deleteMovie } from "../services/movieService";
 import SearchBox from "./common/searchBox";
+import { toast } from "react-toastify";
 
 class Movies extends Component {
   state = {
@@ -20,24 +22,38 @@ class Movies extends Component {
     searchQuery: ""
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     //best place to refresh state
-    const genres = [{ name: "All Genres", _id: 0 }, ...getGenres()]; // spread and add all genres component. ive added a falsy 0 id so that each item in the list has an id!
+    const { data } = await getGenres(); // note - async things return promises, must be awaited!
+    const genres = [{ name: "All Genres", _id: 0 }, ...data]; // spread and add all genres component. ive added a falsy 0 id so that each item in the list has an id!
+    // const genres = [{ name: "All Genres", _id: 0 }, ...backendGenres];
+    const { data: movies } = await getMovies();
+
     this.setState({
-      movies: getMovies(),
+      movies,
       genres,
       sortColumn: { path: "title", order: "asc" },
       selectedGenre: genres[0] // initialize to all genres
     });
   }
 
-  handleDelete = movie => {
-    console.log(movie);
+  handleDelete = async movie => {
+    const originalMovies = this.state.movies; // keep old version in case of failure
     //erase movie with _id as passed
-    const filtered = this.state.movies.filter(m => m != movie);
+    const filtered = originalMovies.filter(m => m != movie);
     // returns only elements where id isnt same
+
+    //optimistic update
     this.setState({ movies: filtered });
-    deleteMovie(movie._id);
+    try {
+      await deleteMovie(movie._id);
+    } catch (exception) {
+      if (exception.response && exception.response.status === 404) {
+        toast("This movie has already been deleted."); // catch EXPECTED error here
+
+        this.setState({ movies: originalMovies });
+      }
+    }
   };
 
   handleLike = movie => {
