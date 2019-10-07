@@ -7,6 +7,7 @@ import { getGenres } from "../services/fakeGenreService";
 import MoviesTable from "./moviesTable";
 import _ from "lodash"; // to implement sorting
 import { deleteMovie } from "../services/fakeMovieService";
+import SearchBox from "./common/searchBox";
 
 class Movies extends Component {
   state = {
@@ -15,7 +16,8 @@ class Movies extends Component {
     pageSize: 4,
     currentPage: 1,
     selectedGenre: {},
-    sortColumn: {}
+    sortColumn: { path: "title", order: "asc" },
+    searchQuery: ""
   };
 
   componentDidMount() {
@@ -56,7 +58,7 @@ class Movies extends Component {
   handleGenreSelect = genre => {
     //set state to genre
     // console.log(genre);
-    this.setState({ selectedGenre: genre, currentPage: 1 });
+    this.setState({ selectedGenre: genre, currentPage: 1, searchQuery: "" }); // controlled components CANNOT BE NULL OR UNDEF
   };
 
   handleSort = sortColumn => {
@@ -70,25 +72,44 @@ class Movies extends Component {
     this.props.history.push("/movies/new");
   };
 
+  handleSearch = query => {
+    // console.log(input.value);
+    this.setState({ searchQuery: query, selectedGenre: {}, currentPage: 1 });
+  };
+
   getPageData = () => {
     const {
       movies: allMovies,
       pageSize,
       currentPage,
       selectedGenre,
-      sortColumn
+      sortColumn,
+      searchQuery
     } = this.state;
-    const filteredMovies =
-      selectedGenre.name && selectedGenre._id // if both truthy, apply filter - otherwise display all
-        ? allMovies.filter(movie => movie.genre._id === selectedGenre._id)
-        : allMovies;
 
+    //FILTERING
+    // good place to handle search. check if search field is truthy - if so, filter by search field. if not, filter by genres
+    let filteredMovies = [];
+    if (searchQuery) {
+      // console.log("will filter by search");
+      filteredMovies = allMovies.filter(
+        movie => movie.title.match(new RegExp(searchQuery, "i")) // regex works
+      );
+    } else {
+      filteredMovies =
+        selectedGenre.name && selectedGenre._id // if both truthy, apply filter - otherwise display all
+          ? allMovies.filter(movie => movie.genre._id === selectedGenre._id)
+          : allMovies;
+    }
+
+    //SORTING
     const sortedMovies = _.orderBy(
       filteredMovies,
       [sortColumn.path],
       [sortColumn.order]
     );
 
+    //PAGINATION
     const movies = paginate(sortedMovies, currentPage, pageSize);
 
     return {
@@ -132,6 +153,10 @@ class Movies extends Component {
               Movies Component here! There are {totalCount} movies in the
               database
             </div>
+            <SearchBox
+              onChange={this.handleSearch}
+              value={this.state.searchQuery}
+            />
             <MoviesTable
               movies={movies}
               onLike={this.handleLike}

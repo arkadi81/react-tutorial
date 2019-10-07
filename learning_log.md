@@ -379,3 +379,7 @@ npm i react-router-dom@4.3.1
       est 30min
 
       Solution and guidance - very typical real world situation - when we populate our state from server, or send data to server, we may need to build custom logic to map the data between server and stateto match each other. often, server endpoints will return data that is consumed by more than one page, and every page will need different parts and representations of the data, so we will have to map the data from the endpoint to the view
+
+      "software engineering is all about tradeoffs - there is never a perfect solution"
+
+      3. adding a search box. in movies, add search box (case insensitive) to search by movie name. genre should disappear on search (auto clear on search). filteration of genre clears search.
