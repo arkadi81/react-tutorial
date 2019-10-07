@@ -4,6 +4,7 @@ Js can also be used for preformatting of output etc (we can return jsx)
 
 - random
   - useful for image testing with side:imgUrl: "https://picsum.photos/200"
+  - mockup backend placeholder: https://jsonplaceholder.typicode.com/
 - vscode
 
   - replace dialog: ctrl/H
@@ -383,3 +384,228 @@ npm i react-router-dom@4.3.1
       "software engineering is all about tradeoffs - there is never a perfect solution"
 
       3. adding a search box. in movies, add search box (case insensitive) to search by movie name. genre should disappear on search (auto clear on search). filteration of genre clears search.
+
+
+      I've build a reusable searchbox component. the component is responsible to raise an event on change that will feed into the filter/sort/paginate logic of its parent.
+
+      - Calling and navigating backend services:
+
+      great tool for mockup backend -
+      https://jsonplaceholder.typicode.com/
+
+      Representational state transfer. Application Programming Interface (REST API). supports CRUD api
+      - install JSONView extension for a prettier json view in chrome
+      - HTTP clients:
+      React is jut a lightweight library for rendering UIs. makes sure that state synces with view/dom. React is agnostic as far as http requests go. we can use whatever library we like.
+
+      - fetch API is now implemented in most modern browsers. jQuery Ajax works too. Axios also works.
+
+      We will use axios, but other options totally work.
+      npm i axios@0.18
+
+      - getting data:
+
+        import axios from 'axios'
+        DNF - correct place to fetch data is componentDidMount
+        const promise = axios.get(url); // the method returns a promise - an object which holds the result of an async operation. (an operation which will complete in the future).
+        when the call initiate the get call, the promise is PENDING. it then becomes either RESOLVED (success) or REJECTED (failure)
+
+        PENDING -> RESOLVED/REJECTED
+
+        in dev tools, the status of the promise is internal - cannot be accessed via . notation.
+        once resolved, the promise holds header, data, original request, status etc.
+        to get the data from the promise, we can use promise.then() // this is old way of doing things,
+
+        modern js has a different method: await keyword
+
+        const response = await promise;
+        console.log(response); actually gives us all the data we need
+        Whenever we use the await keyword in a function, we should decorate the function with an async  keyword. (in this case, async componentDidMount)
+
+        or even more efficiently: async componentDidMount -> const response = await axios.get(url);
+        the data property of response holds the data of the response.
+        once data is recieved, call setState;
+
+      - creating new records:
+        handleAdd = async () => {
+          const result = awaitaxios.post(url,data).
+          // generally endpoints will return the added record as the data property of result (can be destructured)
+          // generally the server will be responsible for creating the unique id
+
+          const posts = [post, ...state.posts];
+          this.setState({posts})
+        }
+
+      - lifecycle of a request
+        methods: get, post, put (updates), delete (is this in use)
+        to avoid xcss, whenever an app sends a xhr to a different server, the browser sends an OPTIONS method.
+
+        status 201 = resource was created
+
+      - updating data
+        async () => {
+         const {data} = await axios.put(url, entirePost) ->update all properties // axios.patch(url, {only properties to update})->update one or two properties
+
+         const posts = [...this.state.posts]
+         const index = posts.indexOf(post);
+         posts[index] = {...post};
+         this.setState({posts})
+        }
+        generally, the server will return the updated object in the response
+
+      - deleting data
+
+        (async () => {
+            const response = await axios.delete(urlIncludingID);
+        }
+
+      - optimistic and pessimistic updates
+
+        pessimistic - if error occures on the server call, we dont go further
+
+        optimistic update -assume that most of the time, call to server succeeds - update ui first. call server. if the call fails, revert ui to previous state.
+
+        catching failed promises:
+        undoing the most recent change -
+
+        define original state before the update.
+        const originalData = this.state.data;
+
+        try {
+          await axios.delete(url)
+          //simulate error
+          throw new Error('');
+        }
+        catch (exception) {
+            // display error to the user and rever data back
+            alert('something went wrong)
+            this.setState({ data: originalData})
+        }
+
+      - expected and unexpected errors:
+        - expected errors are errors that the api errors predict and return (like a 404 code, or 400 -  bad request (happens when validation of form data fails) - as in, we knew that was a possibility)
+
+          in http protocol, 400 errors are referred to as CLIENT ERROR.
+          in this case, we can tell the user what went wrong and how to fix it
+
+        - unexpected errors are errors that are not generally happening / forseeable - database down,
+          network down, bugs etc. things that should not happen under normal circumstances. we generally want to
+          -  log these.
+          - displace a generic and friendly error message to the user ('unexpected error happened')
+
+        checking what type of error we get. the exception parameter in the catch statement has two properties:
+          - ex.request ->set if we can successfully submit a request, otherwise null.
+          - ex.response -> set only if we get a response. so if this is null, its unexpected
+
+          checking for expected errors:
+          if (ex.response && ex.response.status ===404) {}
+          first handle the logic for all expected errors, then in the else {} block, handle unexpected errors.
+
+      - handling unexpected errors globally
+          axios has the ability to intercept errors
+          axios.interceptors.request / axios.interceptors.request
+
+          axios.interceptors.response.use(success, error => {
+            //code will be run every time we have a response with an error
+            const expectedError = (error.response && error.response.status >=400 && error.response.status < 500)
+
+            if (!expectedError) {
+              //only if error is unexpected, log and display generic message
+              console.log("loggin error: ", error)
+              alert("an unexpected error occured");
+            }
+            return Promise.reject(error); // creates a rejected promise.
+          })
+
+          IMPORTANT: the interceptor is called first, then control is passed to the catch block.
+
+          the way above, all expected error handling is delegated to the methods that deal with each operation. the unexpected errors are handled through interceptors.
+
+          if we dont have EXPECTED errors, we dont need try catch blocks.
+
+      - extracting a reusable http service.
+        the logic behind interceptors and error handling can be built into a seperate reusable service / component.
+        in our project, lets add /services and add httpService.js - just a service, not a component
+
+        the object exports default {
+          get: axios.get,
+          post: axios.post,
+          put: axios.put,
+          delete: axios.delete
+        }
+
+        import the object as http to app.js, and rename all instances of axios. to http.
+        this way, if in the future we decide to use another library instead of axios, all we need to do is adjust httpService.js. the return object will take care of the rest.
+
+      - extracting a config module
+        add config.json at /src
+
+        config.json:
+
+        {
+          apiEndpoint: url,
+        }
+        import config from "./config.json"
+        use all properties in the code as config.propName
+
+      - TOAST
+        npm i react-toastify@4.1
+        import {ToastContainer} from 'react-toastify'
+        import 'react-toastify/dist/ReactToastify.css'
+
+        add <ToastContainer/> in the app component
+
+        to use the toast notifications, in the httpService,
+        import {toast} from 'react-toastify'
+        then replace all alerts with toast.error(text)
+        other options:
+        toast.success
+        toast.info
+        or also just call as a function: toast(msg);
+
+      - Logging errors
+        in order to log client side issues, there are online services that collect errors.
+        one example is sentry.io
+        npm i raven-js@3.26.4
+
+        import Raven from 'raven-js
+
+        place the code from sentry.io into index.js
+
+        to use raven for logging:
+        Raven.captureException(error);
+
+      - extracting a logger service
+        currently, raven installation details are polluting index.js, and are also making it harder in the furute to replace raven if the need arises.
+        lets extract all of the logic of working with raven into another module, so that if we need to make changes or swap for another library, there is only one spot to change in.
+
+        add logService.js to /services/
+
+        logService.js:
+
+        import Raven
+        function init() {
+
+        }
+
+        function log(error) {
+          Raven.CaptureException(error)
+        }
+
+        export default {
+          init, log
+        };
+
+        now back to index.js: import logService (or whatever else) from './services/logService.js
+        logService.init;
+
+      - backend - currently pre-built - node, express (middleware for building restful api), mongoDB
+        get mongo / community server edition
+        compass is the client app that we use to look at data in mongo. can install together or separately.
+        mongod = daemon running in the background.
+
+        search for advanced system settings > env variables > path > edit > new > paste path to the dir which includes mongod server.
+
+        by default, mongo stores data on windows in c:\data\db
+        create the folder, or swap path.
+        first connection - leave defaults as are.
