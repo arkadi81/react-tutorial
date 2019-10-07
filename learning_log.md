@@ -609,3 +609,15 @@ npm i react-router-dom@4.3.1
         by default, mongo stores data on windows in c:\data\db
         create the folder, or swap path.
         first connection - leave defaults as are.
+
+        for server backend setup:
+        as of 20191006: get the source from vidly-api-node
+        npm i
+        one package will fail due to breaking change
+        npm i bcypt@3.0.6 to fix
+        node seed.js
+        node index.js
+
+        note: currently failing some tests!
+
+        to test endpoints, use postman (postman chrome now deprecated, using adanced REST client)
