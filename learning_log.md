@@ -630,3 +630,38 @@ npm i react-router-dom@4.3.1
 
       - authentication and authorization
         content: JSON web tokens, calling protected apis, showing/hiding elements, protecting routes
+
+        in order to talk to our /users/ end point, lets create another service - userService
+
+        with current backend implementation, /auth manages authentication sessions
+
+        - basic idea of authentication in this implementation: to log in, sent POST {email, pw} to /auth. If the object we send authenticates, the server returns a JWT (json web token). the jwt is logged on the server as valid, and is stored. for future times, every time we make a run to the server, we also send the jwt, which allows us to auth.
+
+        authService will be responsible for operations like login and logout.
+
+        the jwts are stored in local storage, which can store key/value pairs
+        to store in local storage: localStorage.setItem(key, value);
+
+        in current implementation, whenever a successful login occures, the server returns a custom header (x-stuff), in this case, x-auth-token, which we can use to store in the localStorage.
+
+        note we may also be ableto implement auth via cookies / other methods.
+
+      - jwts
+        jwt.io
+        these can be decoded, but in order to generate/regenerate them, we need a secret key stored on the server. this is how we protect against the injection of these into our applications.
+        note- knowing the secret key may allow to genrate a web token a server will take as real, opportunity for pentesting.
+
+      -decoding jwts to get info out
+      since the user is info that most all components will need, the state can be kept in App class.
+      get the jwt in componentDidMount
+      const jwt = localStorage.getItem('token');
+
+      npm i jwt-decode@2.2.0
+      import jwtDecode from 'jwt-decode'
+
+      note - componentDidMount calls user change state - it is called only once duringthe lifecycle of the app since its in App. to make sure we reload the cdm of App, we need to do a full reload,
+      so instead of history, go window.location = "/" // probably not ideal at all!!
+
+      logging out - just delete the jwt and window location.
+
+      ideally, we should have authentication delegated to a single module (authService?)

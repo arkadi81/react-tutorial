@@ -47,12 +47,26 @@ class Navbar extends Component {
             <NavLink className="nav-iem nav-link" to="/rentals">
               Rentals
             </NavLink>
-            <NavLink className="nav-iem nav-link" to="/login">
-              Login
-            </NavLink>
-            <NavLink className="nav-iem nav-link" to="/register">
-              Register
-            </NavLink>
+            {!this.props.user && ( // if no user here, then build login and register stuff since those are truthy.
+              <React.Fragment>
+                <NavLink className="nav-iem nav-link" to="/login">
+                  Login
+                </NavLink>
+                <NavLink className="nav-iem nav-link" to="/register">
+                  Register
+                </NavLink>
+              </React.Fragment>
+            )}
+            {this.props.user && ( // if no user here, then build login and register stuff since those are truthy.
+              <React.Fragment>
+                <NavLink className="nav-iem nav-link" to="/profile">
+                  {this.props.user.name}
+                </NavLink>
+                <NavLink className="nav-iem nav-link" to="/logout">
+                  Logout
+                </NavLink>
+              </React.Fragment>
+            )}
           </div>
         </div>
 

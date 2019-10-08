@@ -1,22 +1,25 @@
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import jwtDecode from "jwt-decode";
 // import logo from './logo.svg';
 // import Table from "./components/tableComponent";
-import Navbar from "./components/navbar";
 // import CRUDTemplate from "./components/crudComponent";
 // import ItemsList from "./components/itemsListComponent";
 // import Counter from "./components/counters";
+import Navbar from "./components/navbar";
 import Movies from "./components/movies";
 import Counters from "./components/counters";
-import "./App.css";
 import Customers from "./components/customers";
 import Rentals from "./components/rentals";
 import NotFound from "./components/notFound";
 import MovieForm from "./components/movieForm";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
-import { ToastContainer } from "react-toastify";
+import Logout from "./components/logout";
+
 import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 class App extends Component {
   state = {
@@ -42,6 +45,14 @@ class App extends Component {
     //called after component is rendered into the DOM. good place to do ajax calls
     // ajax call -> setState(new data)
     // console.log("App - componentDidMount fired");
+    try {
+      const jwt = localStorage.getItem("token");
+      const user = jwtDecode(jwt);
+      // console.log(user);
+      this.setState({ user });
+    } catch (ex) {
+      // no valid token, no one login
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -109,6 +120,7 @@ class App extends Component {
         <Navbar
           // only count those greater than 0
           totalCounters={this.state.counters.filter(c => c.value > 0).length}
+          user={this.state.user}
         />
         <main className="container">
           {/*<ItemsList
@@ -130,6 +142,7 @@ class App extends Component {
             <Route path="/movies/:id" component={MovieForm} />
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
+            <Route path="/logout" component={Logout} />
             <Route path="/movies" component={Movies} />
             <Route path="/customers" component={Customers} />
             <Route path="/rentals" component={Rentals} />

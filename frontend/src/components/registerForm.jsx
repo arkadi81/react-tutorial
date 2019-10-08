@@ -1,6 +1,8 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form"; // base class, reusable form component
+// with the *, we will just have a userService object with functions as methods.
+import { register } from "../services/userService";
 
 class RegisterForm extends Form {
   state = {
@@ -26,9 +28,23 @@ class RegisterForm extends Form {
       .label("Name")
   };
 
-  doSubmit = () => {
+  doSubmit = async () => {
     //
-    console.log("Submitted");
+    // console.log("Submitted");
+    try {
+      const response = await register(this.state.data);
+      console.log(response);
+      //access custom headers: make sure the backend exposes them
+      localStorage.setItem("token", response.headers["x-auth-token"]);
+      this.props.history.push("/");
+    } catch (exception) {
+      if (exception.response && exception.response.status === 400) {
+        // only expected error here is that the email we've entered already exists (since that's the unique username)
+        const errors = { ...this.state.errors };
+        errors.username = exception.response.data;
+        this.setState({ errors });
+      }
+    }
   };
 
   render() {
