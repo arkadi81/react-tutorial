@@ -662,6 +662,14 @@ npm i react-router-dom@4.3.1
       note - componentDidMount calls user change state - it is called only once duringthe lifecycle of the app since its in App. to make sure we reload the cdm of App, we need to do a full reload,
       so instead of history, go window.location = "/" // probably not ideal at all!!
 
-      logging out - just delete the jwt and window location.
+      logging out - just delete the jwt and window.location.
+
+    - refactoring
 
       ideally, we should have authentication delegated to a single module (authService?)
+      logic of storing/removing of jwt can be delegated to authservice as well
+
+      ```some code
+      require 'ruby'
+      more stuff
+      ```

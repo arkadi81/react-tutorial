@@ -3,6 +3,7 @@ import Joi from "joi-browser";
 import Form from "./common/form"; // base class, reusable form component
 // with the *, we will just have a userService object with functions as methods.
 import { register } from "../services/userService";
+import auth from "../services/authService";
 
 class RegisterForm extends Form {
   state = {
@@ -35,7 +36,8 @@ class RegisterForm extends Form {
       const response = await register(this.state.data);
       console.log(response);
       //access custom headers: make sure the backend exposes them
-      localStorage.setItem("token", response.headers["x-auth-token"]);
+      // localStorage.setItem("token", response.headers["x-auth-token"]);
+      auth.loginWithJwt(response.headers["x-auth-token"]);
       this.props.history.push("/");
     } catch (exception) {
       if (exception.response && exception.response.status === 400) {

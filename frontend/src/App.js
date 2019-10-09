@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import jwtDecode from "jwt-decode";
+// import jwtDecode from "jwt-decode";
 // import logo from './logo.svg';
 // import Table from "./components/tableComponent";
 // import CRUDTemplate from "./components/crudComponent";
@@ -17,6 +17,7 @@ import MovieForm from "./components/movieForm";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
 import Logout from "./components/logout";
+import auth from "./services/authService";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -45,14 +46,8 @@ class App extends Component {
     //called after component is rendered into the DOM. good place to do ajax calls
     // ajax call -> setState(new data)
     // console.log("App - componentDidMount fired");
-    try {
-      const jwt = localStorage.getItem("token");
-      const user = jwtDecode(jwt);
-      // console.log(user);
-      this.setState({ user });
-    } catch (ex) {
-      // no valid token, no one login
-    }
+    const user = auth.getCurrentUser();
+    this.setState({ user });
   }
 
   componentDidUpdate(prevProps, prevState) {

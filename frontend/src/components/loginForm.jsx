@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/form"; // base class, reusable form component
-import { login } from "../services/authService";
+import auth from "../services/authService";
 
 class LoginForm extends Form {
   state = {
@@ -33,12 +33,12 @@ class LoginForm extends Form {
     // console.log("Submitted");
     try {
       const { data } = this.state;
-      const { data: jwt } = await login(data.username, data.password);
+      await auth.login(data.username, data.password);
       // console.log(jwt);
-      localStorage.setItem("token", jwt);
+      // localStorage.setItem("token", jwt); //delegated to auth service
       //redirect
       // this.props.history.push("/");
-      window.location = "/";
+      window.location = "/"; // stays jere since this is outside of login logic.
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         //wrong username /pw combo
