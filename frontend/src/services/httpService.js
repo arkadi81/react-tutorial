@@ -1,7 +1,9 @@
 import axios from "axios";
 import logger from "./logService";
 import { toast } from "react-toastify";
+import auth from "./authService";
 
+axios.defaults.headers.common["x-auth-token"] = auth.getJwt();
 //responsible for logic behind calling backend services. decided on which library we use and how. returns unified api though.
 axios.interceptors.response.use(null, error => {
   const expectedError =

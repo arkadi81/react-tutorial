@@ -673,3 +673,12 @@ npm i react-router-dom@4.3.1
       require 'ruby'
       more stuff
       ```
+
+    - calling protected API endpoints
+      in this configuration, protection is doen on server end by requiring jwt for auth.
+      we need to configure httpService to send those to get access to protected endpoints.
+      we can configure a default header so that whenever axios wants to send an xhr, it includes the header in the request.
+
+      ```axios.defaults.headers.common['x-auth-token] = auth.getToken
+      axios.defaults.header.post
+      ```
