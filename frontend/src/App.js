@@ -17,6 +17,7 @@ import MovieForm from "./components/movieForm";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
 import Logout from "./components/logout";
+import ProtectedRoute from "./components/common/protectedRoute";
 import auth from "./services/authService";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -109,13 +110,15 @@ class App extends Component {
   render() {
     //when a component is rendered, all of its children are rendered recursively.
     // console.log("App - render fired");
+
+    const { user } = this.state;
     return (
       <React.Fragment>
         <ToastContainer />
         <Navbar
           // only count those greater than 0
           totalCounters={this.state.counters.filter(c => c.value > 0).length}
-          user={this.state.user}
+          user={user}
         />
         <main className="container">
           {/*<ItemsList
@@ -133,8 +136,11 @@ class App extends Component {
             onDelete={this.handleDelete}
           /> */}
           <Switch>
-            <Route path="/movies/new" component={MovieForm} />
-            <Route path="/movies/:id" component={MovieForm} />
+            {/* <Route path="/movies/new" component={MovieForm} /> */}
+            {/* Protected new movie route below */}
+            <ProtectedRoute path="/movies/new" component={MovieForm} />
+            <ProtectedRoute path="/movies/:id" component={MovieForm} />
+
             <Route path="/register" component={RegisterForm} />
             <Route path="/login" component={LoginForm} />
             <Route path="/logout" component={Logout} />

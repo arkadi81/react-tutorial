@@ -712,4 +712,18 @@ npm i react-router-dom@4.3.1
       ```
 
       20191019
-      
+
+    - protecting routes
+      we can protect certain routes to only allow registered / authed users access to certain routes
+      (which potentially means that each route needs a designation of whether it is sterile or not)
+      as previously, use the render property rather than component
+
+      ```
+      <Route path="..." render={props => {
+        if (!user) return <Redirect to="/login" />
+        render <MovieForm {...props} />
+        }
+      } }>
+
+    - extracting a protected route (to be reused for all routes that must be protected)
+      lets create a ProtectedRoute component - the component will have an interface identical to the usual <Route> component, but will be aware of the current user. if no user, we redirect to login
