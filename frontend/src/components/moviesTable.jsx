@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Like from "./common/like";
 import Table from "./common/table";
 import { Link } from "react-router-dom";
+import auth from "../services/authService";
 
 class MoviesTable extends Component {
   columns = [
@@ -21,14 +22,16 @@ class MoviesTable extends Component {
     }, // for like and delete buttons, no need to sort or display, just render the cols.
     {
       key: "delete",
-      content: movie => (
-        <button
-          className="btn btn-danger btn-sm"
-          onClick={() => this.props.onDelete(movie)}
-        >
-          Delete
-        </button>
-      )
+      content: movie =>
+        auth.getCurrentUser() &&
+        auth.getCurrentUser().isAdmin && (
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={() => this.props.onDelete(movie)}
+          >
+            Delete
+          </button>
+        )
     }
   ]; // does not need to be part of state - we're not changing it.
   render() {

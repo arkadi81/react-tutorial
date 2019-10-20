@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import Joi from "joi-browser";
 import Form from "./common/form"; // base class, reusable form component
 import auth from "../services/authService";
@@ -38,7 +39,8 @@ class LoginForm extends Form {
       // localStorage.setItem("token", jwt); //delegated to auth service
       //redirect
       // this.props.history.push("/");
-      window.location = "/"; // stays jere since this is outside of login logic.
+      const { state } = this.props.location;
+      window.location = state ? state.from.pathname : "/"; // stays jere since this is outside of login logic.
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         //wrong username /pw combo
@@ -50,6 +52,7 @@ class LoginForm extends Form {
   };
 
   render() {
+    if (auth.getCurrentUser()) return <Redirect to="/" />;
     return (
       <div>
         <h1>Login Form</h1>

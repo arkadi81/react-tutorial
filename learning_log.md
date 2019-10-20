@@ -727,3 +727,17 @@ npm i react-router-dom@4.3.1
 
     - extracting a protected route (to be reused for all routes that must be protected)
       lets create a ProtectedRoute component - the component will have an interface identical to the usual <Route> component, but will be aware of the current user. if no user, we redirect to login
+
+    - redirected after login
+      lets modify our login form so that it keeps info about where the user actually originally wanted to go.
+
+      if we try to log the props inside of the render method in the ProtectedRoute component, we will see our history, location and match properties of the props object.
+      the information about where we wanted to go before redirect is stored in props.location.pathname.
+
+      we will use this information to pass it to our redirect component. Per react router documentation, we find the data attributes and format that redirect component accepts:
+      pathname, search and state:{} we will pass the additional info about where to redirect in state.
+
+    - exercise
+      only show delete button if user is logged in and is in admin role.
+
+      ALWAYS SELECT THE SOLUTION THAT ALLOWS FOR THE QUICKEST WORKING SOFTWARE AS A FIRST STEP
