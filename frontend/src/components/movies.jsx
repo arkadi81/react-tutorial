@@ -148,6 +148,7 @@ class Movies extends Component {
 
     const result = this.getPageData();
     const { totalCount, data: movies } = result;
+    const { user } = this.props;
 
     return (
       <React.Fragment>
@@ -162,9 +163,11 @@ class Movies extends Component {
             />
           </div>
           <div className="col">
-            <button className="btn btn-primary" onClick={this.handleNewMovie}>
-              New Movie
-            </button>
+            {user && (
+              <button className="btn btn-primary" onClick={this.handleNewMovie}>
+                New Movie
+              </button>
+            )}
             <div>
               Movies Component here! There are {totalCount} movies in the
               database

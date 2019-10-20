@@ -682,3 +682,34 @@ npm i react-router-dom@4.3.1
       ```axios.defaults.headers.common['x-auth-token] = auth.getToken
       axios.defaults.header.post
       ```
+
+    - fixing bidirectional dependencies
+      a common design problem - auth service depends on http. http depends on auth. we need to untangle this.
+      1) determine which module is more "core"
+      2) since http is more "core", then it cannot depend on auth (but auth is oK to be the next level of abstraction and depend on http)
+
+      rather for the httpService ASKING auth for a jwt, we can tell auth to GIVE http the jwt.
+
+      in httpService, add another function:
+      ``` function setJwt(jwt) {
+        axios.defaults.headers.common["x-auth-token"] = jwt;
+        }
+        ```
+
+      add the function to the exported object from httpService.
+      then, in auth, just use
+      ``` http.setJwt(getJwt())
+
+    - authorization
+      in the server implementation, deletion is only allowed by users who have isAdmin:true on their account and a jwt to match.
+
+    - showing and hiding elements based on session (user/login/auth)
+      DNF: good way to display elements if thing is truthy: thing && <element>
+
+      DNF, when we want pass info to routes, in the route jsx call, go like so
+      ```
+      <Route path="movies" render={props=><ComponentName {...props} {more info we're passing}>}>
+      ```
+
+      20191019
+      
